@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import request from 'supertest';
+import { AppModule } from '../src/app.module';
+import { FAKE_USER_ID } from '../src/schema/user.schema.stub';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -15,10 +16,14 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  afterEach(async () => {
+    await app.close();
+  });
+
+  it('/users (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get(`/users?id=${FAKE_USER_ID}`)
       .expect(200)
-      .expect('Hello World!');
+      .expect('null');
   });
 });

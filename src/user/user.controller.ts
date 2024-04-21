@@ -17,33 +17,33 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getUser(specifiedUserDto: SpecifiedUserDto): Promise<UserRo | void> {
+  getUser(@Query() specifiedUserDto: SpecifiedUserDto): Promise<UserRo> {
     return this.userService.getUser(specifiedUserDto.id);
   }
 
-  // @Post()
-  // createUser(newUserDto: NewUserDto): Promise<UserRo> {
-  //   return this.userService.createUser(newUserDto);
-  // }
+  @Post()
+  createUser(@Query() newUserDto: NewUserDto): Promise<UserRo> {
+    return this.userService.createUser(newUserDto);
+  }
 
-  // @Patch()
-  // updateUser(
-  //   @Query() specifiedUserDto: SpecifiedUserDto,
-  //   @Body() updatedUserDto: UpdatedUserDto,
-  // ): Promise<UserRo | void> {
-  //   return this.userService.updateUser(specifiedUserDto.id, updatedUserDto);
-  // }
+  @Patch()
+  updateUser(
+    @Query() specifiedUserDto: SpecifiedUserDto,
+    @Body() updatedUserDto: UpdatedUserDto,
+  ): Promise<UserRo> {
+    return this.userService.updateUser(specifiedUserDto.id, updatedUserDto);
+  }
 
-  // @Put()
-  // replaceUser(
-  //   @Query() specifiedUserDto: SpecifiedUserDto,
-  //   @Body() newUserDto: NewUserDto,
-  // ): Promise<UserRo | void> {
-  //   return this.userService.replaceUser(specifiedUserDto.id, newUserDto);
-  // }
+  @Put()
+  replaceUser(
+    @Query() specifiedUserDto: SpecifiedUserDto,
+    @Body() newUserDto: NewUserDto,
+  ): Promise<UserRo> {
+    return this.userService.updateUser(specifiedUserDto.id, newUserDto);
+  }
 
-  // @Delete()
-  // deleteUser(specifiedUserDto: SpecifiedUserDto): Promise<UserRo | void> {
-  //   return this.userService.deleteUser(specifiedUserDto.id);
-  // }
+  @Delete()
+  deleteUser(@Query() specifiedUserDto: SpecifiedUserDto): Promise<UserRo> {
+    return this.userService.deleteUser(specifiedUserDto.id);
+  }
 }

@@ -1,31 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/schema/user.schema';
-import { NewUserDto, SpecifiedUserDto, UpdatedUserDto } from './dto/user.dto';
-import { UserRo } from './ro/user.ro';
+import { User, UserDocument } from 'src/schema/user.schema';
+import { NewUserDto, UpdatedUserDto } from './dto/user.dto';
+import { NOT_EXISTED_USER, UserJson, UserRo } from './ro/user.ro';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async getUser(id: string): Promise<UserRo | void> {
-    return this.userModel.findById(id);
+  async getUser(id: string): Promise<UserRo> {
+    const user = await this.userModel.findById(id);
+    return user === null ? NOT_EXISTED_USER : UserJson.parse(user);
   }
 
-  // async createUser(newUserDto: NewUserDto): Promise<UserRo> {
+  async createUser(newUserDto: NewUserDto): Promise<UserRo> {
+    const user: UserDocument = await new this.userModel(newUserDto).save();
+    return UserJson.parse(user);
+  }
 
-  // }
+  async updateUser(id: string, updatedUserDto: UpdatedUserDto): Promise<any> {
+    await this.userModel.updateOne({ _id: id }, updatedUserDto);
+    return this.getUser(id);
+  }
 
-  // async updateUser(id: string, updatedUserDto: UpdatedUserDto): Promise<UserRo | void> {
-
-  // }
-
-  // async replaceUser(id: string, newUserDto: NewUserDto): Promise<UserRo | void> {
-
-  // }
-
-  // async deleteUser(id: string): Promise<UserRo | void> {
-
-  // }
+  async deleteUser(id: string): Promise<UserRo> {
+    const user = this.getUser(id);
+    await this.userModel.deleteOne({ _id: id });
+    return user;
+  }
 }

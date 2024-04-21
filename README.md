@@ -1,12 +1,12 @@
-# restful-api-fastapi &middot; ![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen)
+# restful-api-nestjs &middot; ![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen)
 
 A RESTful API server includes
 
-* Framework: FastAPI
+* Framework: Nest.js
 * OpenAPI: Swagger
 * Database: MongoDB
-* MongoDB Driver: Motor
-* Test: Pytest
+* ORM: Mongoose
+* Test: Jest.js
 * Environment: Docker
 * Deployment: Docker Compose
 
@@ -26,20 +26,20 @@ docker-compose up -d mongo mongo-express
 ### Develop
 
 ```shell
-uvicorn main:app --reload
+npm run start:dev
 ```
 
-[Swagger](http://localhost:8000/docs)
+[Swagger](http://localhost:3000/docs)
 
 ### Test
 
 ```shell
-pytest --cov=./ --cov-report term-missing
+npm run test:cov
 ```
 
 ### Deploy
 
 ```shell
-docker build . -t restful-api-fastapi
+docker build . -t restful-api-nestjs
 docker-compose up -d
 ```
